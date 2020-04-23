@@ -1,10 +1,18 @@
 import {
+  DISPLAY_HIGH_SCORE_FORM,
+  FETCH_HIGH_SCORES_ERROR,
+  FETCH_HIGH_SCORES_REQUEST,
+  FETCH_HIGH_SCORES_SUCCESS,
   INCREMENT_SCORE,
   INCREMENT_TIMER,
   RESTART_QUIZ,
+  SAVE_HIGH_SCORE_ERROR,
+  SAVE_HIGH_SCORE_REQUEST,
+  SAVE_HIGH_SCORE_SUCCESS,
   SET_CURRENT_ANSWER,
   SET_CURRENT_QUESTION,
   SET_ERROR,
+  SET_NAME,
   SET_QUIZ_STATE,
   SUBMIT_ANSWER,
 } from '../actions/actionTypes'
@@ -18,6 +26,10 @@ const initialState = {
   error: '',
   score: 0,
   quizState: 'on',
+  isCurrentScoreHighScore: false,
+  highScores: [],
+  displayHighScoreForm: false,
+  name: '',
 }
 
 export default function todo(state = initialState, action) {
@@ -58,6 +70,51 @@ export default function todo(state = initialState, action) {
       return {
         ...state,
         quizState: action.payload.quizState,
+      }
+    case FETCH_HIGH_SCORES_REQUEST:
+      return {
+        ...state,
+        quizState: 'idle',
+      }
+    case FETCH_HIGH_SCORES_SUCCESS:
+      return {
+        ...state,
+        quizState: 'over',
+        highScores: action.payload.highScores.data,
+      }
+    case FETCH_HIGH_SCORES_ERROR:
+      return {
+        ...state,
+        quizState: 'error',
+        error: action.payload.error,
+      }
+    case SAVE_HIGH_SCORE_REQUEST:
+      return {
+        ...state,
+        quizState: 'idle',
+      }
+    case SAVE_HIGH_SCORE_SUCCESS:
+      return {
+        ...state,
+        isCurrentScoreHighScore: true,
+        displayHighScoreForm: false,
+        quizState: 'over',
+      }
+    case SAVE_HIGH_SCORE_ERROR:
+      return {
+        ...state,
+        quizState: 'error',
+        error: action.payload.error,
+      }
+    case DISPLAY_HIGH_SCORE_FORM:
+      return {
+        ...state,
+        displayHighScoreForm: true,
+      }
+    case SET_NAME:
+      return {
+        ...state,
+        name: action.payload.name,
       }
     case RESTART_QUIZ:
       return {

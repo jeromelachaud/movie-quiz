@@ -5,10 +5,10 @@ const { auth } = require('./auth')
 module.exports = server => {
   server.get('/highscores', auth, async (req, res, next) => {
     try {
-      const highscore = await HighScore.find({}, null, {
-        sort: { score: 1 },
+      const highScores = await HighScore.find({}, null, {
+        sort: { score: -1 },
       }).limit(10)
-      res.send(highscore)
+      res.status(201).send(highScores)
       next()
     } catch (err) {
       return next(new errors.InvalidContentError(err))
@@ -16,7 +16,7 @@ module.exports = server => {
   })
 
   server.post('/highscore', auth, async (req, res, next) => {
-    const { name, score, time } = req.body
+    const { name, score, time } = req.body.data
     const highScore = new HighScore({
       name,
       score,
@@ -25,7 +25,7 @@ module.exports = server => {
 
     try {
       const newHighScore = await highScore.save()
-      res.send(201, newHighScore)
+      res.status(201).send(newHighScore)
       next()
     } catch (error) {
       return next(new errors.InternalError(error.message))

@@ -7,7 +7,7 @@ const verifyToken = autorizationHeader => {
     const verifiedToken = jwt.verify(token, config.JWT_SECRET)
     return verifiedToken
   } catch (error) {
-    console.log(error)
+    console.log('error', error)
   }
 }
 

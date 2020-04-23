@@ -1,30 +1,39 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { restartQuiz } from '../actions'
+import { fetchHighScores, restartQuiz } from '../actions'
 import { formatTimer } from '../utils/formatTimer'
+import HighScoreForm from './HighScoreForm'
+import HighScores from './HighScores'
 
 export default function ScoreBoard() {
-  const state = useSelector(state => state.movieQuiz)
+  const { score, timer, quizState, displayHighScoreForm } = useSelector(
+    state => state.movieQuiz
+  )
   const dispatch = useDispatch()
-  const { score, timer } = state
 
-  const handleOnClick = () => {
+  const handleOnClickRestart = () => {
     dispatch(restartQuiz())
   }
 
+  const handleOnClickFetchHighScores = () => {
+    dispatch(fetchHighScores())
+  }
+
   return (
-    <div>
-      <ul>
-        <li>
-          <b>Your score: {score}</b>
-        </li>
-        <li>
-          <b>Time spent: {formatTimer(timer)}</b>
-        </li>
-      </ul>
-      <button className="btn btn-primary" onClick={handleOnClick}>
-        Restart Quiz
-      </button>
-    </div>
+    <>
+      <section>
+        <header>
+          <h2>Your score: {score}</h2>
+          <h3>Time spent: {formatTimer(timer)}</h3>
+        </header>
+      </section>
+      <section>
+        {displayHighScoreForm && <HighScoreForm />}
+        {quizState === 'over' && highScores.length > 0 && (
+          <HighScores highScores={highScores} />
+        )}
+        {quizState === 'idle' && <div>Fetching High Scores...</div>}
+      </section>
+    </>
   )
 }
