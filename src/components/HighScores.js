@@ -6,8 +6,10 @@ function HighScores() {
   const { highScores } = useSelector(state => state.movieQuiz)
 
   return (
-    <div>
-      <h3>High Scores</h3>
+    <section>
+      <header>
+        <h2>High Scores</h2>
+      </header>
       <table>
         <thead>
           <tr>
@@ -29,7 +31,7 @@ function HighScores() {
             ))}
         </tbody>
       </table>
-    </div>
+    </section>
   )
 }
 

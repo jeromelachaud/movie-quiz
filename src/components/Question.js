@@ -6,12 +6,12 @@ function Question() {
   const question = questions[currentQuestion]
 
   return (
-    <div>
+    <aside>
       <ul>
         <li>movie:{question.movie}</li>
         <li>actor:{question.actor}</li>
       </ul>
-    </div>
+    </aside>
   )
 }
 

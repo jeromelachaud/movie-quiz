@@ -19,8 +19,10 @@ export default function HighScoreForm() {
   }
 
   return (
-    <div>
-      <h2>Congrats! Enter you name</h2>
+    <section>
+      <header>
+        <h2>Congrats! Enter you name</h2>
+      </header>
       <form onSubmit={event => handleOnSubmit(event)}>
         <label htmlFor="name">Enter your name</label>{' '}
         <input
@@ -32,6 +34,6 @@ export default function HighScoreForm() {
         <button>Save High Score</button>
         {quizState === 'idle' && <div>Saving High Scores...</div>}
       </form>
-    </div>
+    </section>
   )
 }

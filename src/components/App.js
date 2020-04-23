@@ -29,23 +29,30 @@ function App() {
   }
 
   return (
-    <div>
-      <h1>Movie Quiz</h1>
-      <Timer delay={1000} />
-      <Score />
-      <Question />
-      <Answers />
-
-      <button
-        className="btn btn-primary"
-        onClick={nextQuestion}
-        disabled={quizState === 'over'}
-      >
-        Confirm and Continue
-      </button>
-      {error && <Error />}
-      {quizState !== 'on' && <ScoreBoard />}
-    </div>
+    <>
+      <section>
+        <header>
+          <h1>Movie Quiz</h1>
+          <Timer delay={1000} />
+          <Score />
+        </header>
+        <Question />
+        <Answers />
+      </section>
+      <section>
+        <header>
+          <button
+            className="btn btn-primary"
+            onClick={nextQuestion}
+            disabled={quizState === 'over'}
+          >
+            Confirm and Continue
+          </button>
+        </header>
+        <section>{error && <Error />}</section>
+        {quizState !== 'on' && <ScoreBoard />}
+      </section>
+    </>
   )
 }
 export default App

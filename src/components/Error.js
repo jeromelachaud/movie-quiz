@@ -6,10 +6,10 @@ export default function Error() {
   const { error } = state
 
   return (
-    <div>
+    <aside>
       <p>
         <b>{error}</b>
       </p>
-    </div>
+    </aside>
   )
 }

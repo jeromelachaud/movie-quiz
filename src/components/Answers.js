@@ -6,10 +6,10 @@ function Answers() {
   const { currentAnswer } = useSelector(state => state.movieQuiz)
 
   return (
-    <div>
+    <aside>
       <Answer value={'true'} selected={currentAnswer === 'true'} />
       <Answer value={'false'} selected={currentAnswer === 'false'} />
-    </div>
+    </aside>
   )
 }
 
