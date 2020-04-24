@@ -199,8 +199,8 @@ export const fetchQuestions = () => async dispatch => {
   let actors = {}
   try {
     const popularMovies = await axios.get(
-      `${process.env.REACT_APP_TMDB_BASE_URL}/popular?api_key=${
-        process.env.REACT_APP_TMDB_API_KEY
+      `${process.env.REACT_APP_TMDB_API_BASE_URL}/popular?api_key=${
+        process.env.REACT_APP_TMDB_API_API_KEY
       }`
     )
     const movies = popularMovies.data.results.map(movie => ({
@@ -211,11 +211,15 @@ export const fetchQuestions = () => async dispatch => {
       actors = await axios.all(
         movies.map(async movie => {
           const cast = await axios.get(
-            `${process.env.REACT_APP_TMDB_BASE_URL}/${
+            `${process.env.REACT_APP_TMDB_API_BASE_URL}/${
               movie.id
-            }/credits?api_key=${process.env.REACT_APP_TMDB_API_KEY}`
+            }/credits?api_key=${process.env.REACT_APP_TMDB_API_API_KEY}`
           )
-          return { id: movie.id, actor: cast.data.cast[0].name }
+          return {
+            id: movie.id,
+            actor: cast.data.cast[0].name,
+            picture: cast.data.cast[0].profile_path,
+          }
         })
       )
     } catch (error) {

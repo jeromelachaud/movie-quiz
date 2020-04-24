@@ -3,13 +3,30 @@ import { useSelector } from 'react-redux'
 
 function Question() {
   const { currentQuestion, questions } = useSelector(state => state.movieQuiz)
-  const question = questions[currentQuestion]
+  const { movie, actor, picture } = questions[currentQuestion]
 
   return (
     <aside>
       <ul>
-        <li>movie:{question.movie}</li>
-        <li>actor:{question.actor}</li>
+        <li>
+          <b>movie</b>: {movie}
+        </li>
+        <li>
+          <b>actor</b>: {actor}
+        </li>
+        <li>
+          <figure>
+            {picture !== null && (
+              <img
+                src={`${
+                  process.env.REACT_APP_TMDB_API_IMAGES_BASE_URL
+                }${picture}`}
+                alt={actor}
+              />
+            )}
+            <figcaption>{actor}</figcaption>
+          </figure>
+        </li>
       </ul>
     </aside>
   )

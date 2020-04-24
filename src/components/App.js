@@ -41,22 +41,22 @@ function App() {
           <Timer delay={1000} />
           <Score />
         </header>
-        {questions && <Question />}
+      </section>
+      <section>{questions && <Question />}</section>
+      <section>
         <Answers />
       </section>
       <section>
-        <header>
-          <button
-            className="btn btn-primary"
-            onClick={nextQuestion}
-            disabled={quizState === 'over'}
-          >
-            Confirm and Continue
-          </button>
-        </header>
-        <section>{error && <Error />}</section>
-        {quizState !== 'on' && <ScoreBoard />}
+        <button
+          className="btn btn-primary"
+          onClick={nextQuestion}
+          disabled={quizState === 'over'}
+        >
+          Confirm and Continue
+        </button>
       </section>
+      <section>{error && <Error />}</section>
+      {quizState !== 'on' && <ScoreBoard />}
     </>
   )
 }
