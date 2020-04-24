@@ -37,7 +37,12 @@ function App() {
     <>
       <section>
         <header>
-          <h1>Movie Quiz</h1>
+          <h1>
+            Movie Quiz{' '}
+            <span role="img" aria-label="Movie Quiz">
+              🍿
+            </span>
+          </h1>
           <Timer delay={1000} />
           <Score />
         </header>
