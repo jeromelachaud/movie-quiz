@@ -1,9 +1,13 @@
 import axios from 'axios'
+import { generateRandomMarks, generateWeightedRandomNumber } from '../utils'
 import {
   DISPLAY_HIGH_SCORE_FORM,
   FETCH_HIGH_SCORES_ERROR,
   FETCH_HIGH_SCORES_REQUEST,
   FETCH_HIGH_SCORES_SUCCESS,
+  FETCH_QUESTIONS_ERROR,
+  FETCH_QUESTIONS_REQUEST,
+  FETCH_QUESTIONS_SUCCESS,
   INCREMENT_SCORE,
   INCREMENT_TIMER,
   RESTART_QUIZ,
@@ -18,7 +22,6 @@ import {
   SET_QUIZ_STATE,
   SUBMIT_ANSWER,
 } from './actionTypes'
-
 
 export const setCurrentAnswer = payload => ({
   type: SET_CURRENT_ANSWER,
@@ -177,5 +180,83 @@ export const saveHighScore = () => async (dispatch, getState) => {
     )
   }
 }
+export const fetchQuestionsSuccess = payload => ({
+  type: FETCH_QUESTIONS_SUCCESS,
+  payload,
+})
 
-export const restartQuiz = () => ({ type: RESTART_QUIZ })
+export const fetchQuestionsError = payload => ({
+  type: FETCH_QUESTIONS_ERROR,
+  payload,
+})
+
+export const fetchQuestionsRequest = () => ({
+  type: FETCH_QUESTIONS_REQUEST,
+})
+
+export const fetchQuestions = () => async dispatch => {
+  dispatch(fetchQuestionsRequest())
+  let actors = {}
+  try {
+    const popularMovies = await axios.get(
+      `${process.env.REACT_APP_TMDB_BASE_URL}/popular?api_key=${
+        process.env.REACT_APP_TMDB_API_KEY
+      }`
+    )
+    const movies = popularMovies.data.results.map(movie => ({
+      id: movie.id,
+      movie: movie.title,
+    }))
+    try {
+      actors = await axios.all(
+        movies.map(async movie => {
+          const cast = await axios.get(
+            `${process.env.REACT_APP_TMDB_BASE_URL}/${
+              movie.id
+            }/credits?api_key=${process.env.REACT_APP_TMDB_API_KEY}`
+          )
+          return { id: movie.id, actor: cast.data.cast[0].name }
+        })
+      )
+    } catch (error) {
+      console.log('error', error)
+    }
+
+    const randomNumber = generateWeightedRandomNumber()
+    const randomMarks = generateRandomMarks(movies.length, randomNumber)
+
+    const questions = actors.map((item, i) => {
+      return Object.assign(
+        {},
+        item,
+        movies[
+          randomMarks[i] === true
+            ? i
+            : Math.floor(Math.random() * movies.length)
+        ]
+      )
+    })
+
+    const questionsWithAnswers = questions.map((item, index) => {
+      return Object.assign({}, item, {
+        answer: actors[index].id === item.id ? 'true' : 'false',
+      })
+    })
+    dispatch(
+      fetchQuestionsSuccess({
+        questions: questionsWithAnswers.sort(() => Math.random() - 0.5),
+      })
+    )
+  } catch (error) {
+    dispatch(
+      fetchQuestionsError({
+        error: 'An error occurred while fetching the question, please retry',
+      })
+    )
+  }
+}
+export const restartQuiz = () => dispatch => {
+  dispatch(resetQuiz())
+  dispatch(fetchQuestions())
+}
+export const resetQuiz = () => ({ type: RESTART_QUIZ })

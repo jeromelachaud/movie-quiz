@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchHighScores, restartQuiz } from '../actions'
-import { formatTimer } from '../utils/formatTimer'
+import { formatTimer } from '../utils'
 import HighScoreForm from './HighScoreForm'
 import HighScores from './HighScores'
 

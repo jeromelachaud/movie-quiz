@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
+  fetchQuestions,
   setCurrentAnswer,
   setError,
   submitAnswer,
@@ -12,9 +13,14 @@ import Question from './Question'
 import Score from './Score'
 import ScoreBoard from './ScoreBoard'
 import Timer from './Timer'
+
 function App() {
   const dispatch = useDispatch()
-  const { currentAnswer, error, quizState } = useSelector(
+  useEffect(() => {
+    fetchQuestions()(dispatch)
+  }, [dispatch])
+
+  const { currentAnswer, error, quizState, questions } = useSelector(
     state => state.movieQuiz
   )
 
@@ -27,7 +33,6 @@ function App() {
     dispatch(setCurrentAnswer({ currentAnswer: '' }))
     dispatch(validateAnswer())
   }
-
   return (
     <>
       <section>
@@ -36,7 +41,7 @@ function App() {
           <Timer delay={1000} />
           <Score />
         </header>
-        <Question />
+        {questions && <Question />}
         <Answers />
       </section>
       <section>

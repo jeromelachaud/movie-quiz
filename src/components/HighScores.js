@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { formatTimer } from '../utils/formatTimer'
+import { formatTimer } from '../utils'
 
 function HighScores() {
   const { highScores } = useSelector(state => state.movieQuiz)

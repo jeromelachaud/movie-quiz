@@ -3,6 +3,9 @@ import {
   FETCH_HIGH_SCORES_ERROR,
   FETCH_HIGH_SCORES_REQUEST,
   FETCH_HIGH_SCORES_SUCCESS,
+  FETCH_QUESTIONS_ERROR,
+  FETCH_QUESTIONS_REQUEST,
+  FETCH_QUESTIONS_SUCCESS,
   INCREMENT_SCORE,
   INCREMENT_TIMER,
   RESTART_QUIZ,
@@ -16,16 +19,15 @@ import {
   SET_QUIZ_STATE,
   SUBMIT_ANSWER,
 } from '../actions/actionTypes'
-import { questions } from '../data/questions.json'
 const initialState = {
-  questions,
+  questions: null,
   timer: 0,
   currentQuestion: 0,
   currentAnswer: '',
   isAnswerCorrect: '',
   error: '',
   score: 0,
-  quizState: 'on',
+  quizState: '',
   isCurrentScoreHighScore: false,
   highScores: [],
   displayHighScoreForm: false,
@@ -34,6 +36,14 @@ const initialState = {
 
 export default function todo(state = initialState, action) {
   switch (action.type) {
+    case FETCH_QUESTIONS_SUCCESS: {
+      return {
+        ...state,
+        questions: action.payload.questions,
+        quizState: 'on',
+      }
+    }
+
     case INCREMENT_TIMER:
       return {
         ...state,
@@ -72,6 +82,7 @@ export default function todo(state = initialState, action) {
         quizState: action.payload.quizState,
       }
     case FETCH_HIGH_SCORES_REQUEST:
+    case FETCH_QUESTIONS_REQUEST:
       return {
         ...state,
         quizState: 'idle',
@@ -81,12 +92,6 @@ export default function todo(state = initialState, action) {
         ...state,
         quizState: 'over',
         highScores: action.payload.highScores.data,
-      }
-    case FETCH_HIGH_SCORES_ERROR:
-      return {
-        ...state,
-        quizState: 'error',
-        error: action.payload.error,
       }
     case SAVE_HIGH_SCORE_REQUEST:
       return {
@@ -101,6 +106,8 @@ export default function todo(state = initialState, action) {
         quizState: 'over',
       }
     case SAVE_HIGH_SCORE_ERROR:
+    case FETCH_HIGH_SCORES_ERROR:
+    case FETCH_QUESTIONS_ERROR:
       return {
         ...state,
         quizState: 'error',
