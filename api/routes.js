@@ -1,4 +1,3 @@
-const errors = require('restify-errors')
 const HighScore = require('./models')
 const { auth } = require('./auth')
 
@@ -10,8 +9,9 @@ module.exports = server => {
       }).limit(10)
       res.status(201).send(highScores)
       next()
-    } catch (err) {
-      return next(new errors.InvalidContentError(err))
+    } catch (error) {
+      console.log('error', error)
+      res.status(404).send({ error: 'an error occurred' })
     }
   })
 
@@ -21,7 +21,8 @@ module.exports = server => {
       res.status(200).send('OK')
       next()
     } catch (error) {
-      return next(new errors.InternalError(error.message))
+      console.log('error', error)
+      res.status(500).send({ error: 'an error occurred' })
     }
   })
 
@@ -38,7 +39,8 @@ module.exports = server => {
       res.status(201).send(newHighScore)
       next()
     } catch (error) {
-      return next(new errors.InternalError(error.message))
+      console.log('error', error)
+      res.status(500).send({ error: 'an error occurred' })
     }
   })
 }
