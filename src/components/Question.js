@@ -1,5 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
+import { tmdbApiImagesBaseUrl } from '../config'
 
 function Question() {
   const { currentQuestion, questions } = useSelector(state => state.movieQuiz)
@@ -17,12 +18,7 @@ function Question() {
         <li>
           <figure>
             {picture !== null && (
-              <img
-                src={`${
-                  process.env.REACT_APP_TMDB_API_IMAGES_BASE_URL
-                }${picture}`}
-                alt={actor}
-              />
+              <img src={`${tmdbApiImagesBaseUrl}${picture}`} alt={actor} />
             )}
             <figcaption>{actor}</figcaption>
           </figure>

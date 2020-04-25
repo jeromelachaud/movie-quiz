@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { baseUrl, jwtToken, tmdbApiBaseUrl, tmdbApiKey } from '../config'
 import { generateRandomMarks, generateWeightedRandomNumber } from '../utils'
 import {
   DELETE_HIGH_SCORES_ERROR,
@@ -135,14 +136,11 @@ export const checkQuizState = () => async (dispatch, getState) => {
 export const fetchHighScores = () => async dispatch => {
   dispatch(fetchHighScoresRequest())
   try {
-    const highScores = await axios.get(
-      `${process.env.REACT_APP_HOST}/highscores`,
-      {
-        headers: {
-          authorization: `Bearer ${process.env.REACT_APP_JWT_TOKEN}`,
-        },
-      }
-    )
+    const highScores = await axios.get(`${baseUrl}/highscores`, {
+      headers: {
+        authorization: `Bearer ${jwtToken}`,
+      },
+    })
     dispatch(fetchHighScoresSuccess({ highScores }))
     dispatch(checkHighScores())
   } catch (error) {
@@ -174,7 +172,7 @@ export const saveHighScore = () => async (dispatch, getState) => {
     const { movieQuiz } = getState()
     const { name, score, timer } = movieQuiz
     await axios.post(
-      `${process.env.REACT_APP_HOST}/highscore`,
+      `${baseUrl}/highscore`,
       {
         data: {
           name,
@@ -184,7 +182,7 @@ export const saveHighScore = () => async (dispatch, getState) => {
       },
       {
         headers: {
-          authorization: `Bearer ${process.env.REACT_APP_JWT_TOKEN}`,
+          authorization: `Bearer ${jwtToken}`,
         },
       }
     )
@@ -218,9 +216,7 @@ export const fetchQuestions = () => async dispatch => {
   let actors = {}
   try {
     const popularMovies = await axios.get(
-      `${process.env.REACT_APP_TMDB_API_BASE_URL}/popular?api_key=${
-        process.env.REACT_APP_TMDB_API_API_KEY
-      }`
+      `${tmdbApiBaseUrl}/popular?api_key=${tmdbApiKey}`
     )
     const movies = popularMovies.data.results.map(movie => ({
       id: movie.id,
@@ -230,9 +226,7 @@ export const fetchQuestions = () => async dispatch => {
       actors = await axios.all(
         movies.map(async movie => {
           const cast = await axios.get(
-            `${process.env.REACT_APP_TMDB_API_BASE_URL}/${
-              movie.id
-            }/credits?api_key=${process.env.REACT_APP_TMDB_API_API_KEY}`
+            `${tmdbApiBaseUrl}/${movie.id}/credits?api_key=${tmdbApiKey}`
           )
           return {
             id: movie.id,
@@ -286,9 +280,9 @@ export const restartQuiz = () => dispatch => {
 export const resetHighScores = () => async dispatch => {
   dispatch(resetHighScoresRequest())
   try {
-    await axios.delete(`${process.env.REACT_APP_HOST}/highscores`, {
+    await axios.delete(`${baseUrl}/highscores`, {
       headers: {
-        authorization: `Bearer ${process.env.REACT_APP_JWT_TOKEN}`,
+        authorization: `Bearer ${jwtToken}`,
       },
     })
     dispatch(resetHighScoresSuccess())

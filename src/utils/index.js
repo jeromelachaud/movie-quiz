@@ -1,4 +1,5 @@
 import { Duration } from 'luxon'
+import { maxNumberOfCorrectAnswers, minNumberOfCorrectAnswers } from '../config'
 
 export const formatTimer = timer => {
   return Duration.fromObject({ milliseconds: timer }).toFormat('mm:ss')
@@ -7,10 +8,8 @@ export const formatTimer = timer => {
 export const generateWeightedRandomNumber = () => {
   return Math.floor(
     Math.random() *
-      (+process.env.REACT_APP_MAX_CORRECT_ANSWERS -
-        +process.env.REACT_APP_MIN_CORRECT_ANSWERS +
-        1) +
-      +process.env.REACT_APP_MIN_CORRECT_ANSWERS
+      (maxNumberOfCorrectAnswers - minNumberOfCorrectAnswers + 1) +
+      minNumberOfCorrectAnswers
   )
 }
 
