@@ -13,6 +13,13 @@ export default function ScoreBoard() {
     displayHighScoreForm,
     highScores,
   } = useSelector(state => state.movieQuiz)
+
+  if (quizState === 'over') {
+    window.scroll({
+      top: document.body.scrollHeight,
+      behavior: 'smooth',
+    })
+  }
   const dispatch = useDispatch()
 
   const handleOnClickRestart = () => {

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { resetHighScores } from '../actions'
 import { formatTimer } from '../utils'
@@ -6,9 +6,16 @@ import { formatTimer } from '../utils'
 function HighScores({ highScores }) {
   const { quizState } = useSelector(state => state.movieQuiz)
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    const element = document.getElementById('deleteButton')
+    element.scrollIntoView({ behavior: 'smooth' })
+  })
+
   const handleOnClick = () => {
     dispatch(resetHighScores())
   }
+
   return (
     <>
       <section>
@@ -38,7 +45,9 @@ function HighScores({ highScores }) {
             <tr>
               <th />
               <th colSpan="2">
-                <button onClick={handleOnClick}>Delete High Score</button>
+                <button id="deleteButton" onClick={handleOnClick}>
+                  Delete High Score
+                </button>
                 {quizState === 'idle' && <div>Deleting High Scores...</div>}
               </th>
               <th />
