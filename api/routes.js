@@ -15,6 +15,16 @@ module.exports = server => {
     }
   })
 
+  server.delete('/highscores', auth, async (req, res, next) => {
+    try {
+      await HighScore.deleteMany({})
+      res.status(200).send('OK')
+      next()
+    } catch (error) {
+      return next(new errors.InternalError(error.message))
+    }
+  })
+
   server.post('/highscore', auth, async (req, res, next) => {
     const { name, score, time } = req.body.data
     const highScore = new HighScore({

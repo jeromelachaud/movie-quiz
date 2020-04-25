@@ -6,9 +6,13 @@ import HighScoreForm from './HighScoreForm'
 import HighScores from './HighScores'
 
 export default function ScoreBoard() {
-  const { score, timer, quizState, displayHighScoreForm } = useSelector(
-    state => state.movieQuiz
-  )
+  const {
+    score,
+    timer,
+    quizState,
+    displayHighScoreForm,
+    highScores,
+  } = useSelector(state => state.movieQuiz)
   const dispatch = useDispatch()
 
   const handleOnClickRestart = () => {
@@ -31,6 +35,16 @@ export default function ScoreBoard() {
         {displayHighScoreForm && <HighScoreForm />}
         {quizState === 'over' && highScores.length > 0 && (
           <HighScores highScores={highScores} />
+        )}
+        {quizState === 'error' && (
+          <section>
+            <button
+              className="btn btn-primary"
+              onClick={handleOnClickFetchHighScores}
+            >
+              Fetch High Scores
+            </button>
+          </section>
         )}
         {quizState === 'idle' && <div>Fetching High Scores...</div>}
       </section>

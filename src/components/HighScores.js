@@ -1,27 +1,31 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { resetHighScores } from '../actions'
 import { formatTimer } from '../utils'
 
-function HighScores() {
-  const { highScores } = useSelector(state => state.movieQuiz)
-
+function HighScores({ highScores }) {
+  const { quizState } = useSelector(state => state.movieQuiz)
+  const dispatch = useDispatch()
+  const handleOnClick = () => {
+    dispatch(resetHighScores())
+  }
   return (
-    <section>
-      <header>
-        <h2>High Scores</h2>
-      </header>
-      <table>
-        <thead>
-          <tr>
-            <th>Rank</th>
-            <th>Player</th>
-            <th>Score</th>
-            <th>Time</th>
-          </tr>
-        </thead>
-        <tbody>
-          {highScores &&
-            highScores.map((highScore, index) => (
+    <>
+      <section>
+        <header>
+          <h2>High Scores</h2>
+        </header>
+        <table>
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Player</th>
+              <th>Score</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            {highScores.map((highScore, index) => (
               <tr key={highScore._id}>
                 <td>{index + 1}</td>
                 <td>{highScore.name}</td>
@@ -29,9 +33,20 @@ function HighScores() {
                 <td>{formatTimer(highScore.time)}</td>
               </tr>
             ))}
-        </tbody>
-      </table>
-    </section>
+          </tbody>
+          <tfoot>
+            <tr>
+              <th />
+              <th colSpan="2">
+                <button onClick={handleOnClick}>Delete High Score</button>
+                {quizState === 'idle' && <div>Deleting High Scores...</div>}
+              </th>
+              <th />
+            </tr>
+          </tfoot>
+        </table>
+      </section>
+    </>
   )
 }
 

@@ -1,4 +1,7 @@
 import {
+  DELETE_HIGH_SCORES_ERROR,
+  DELETE_HIGH_SCORES_REQUEST,
+  DELETE_HIGH_SCORES_SUCCESS,
   DISPLAY_HIGH_SCORE_FORM,
   FETCH_HIGH_SCORES_ERROR,
   FETCH_HIGH_SCORES_REQUEST,
@@ -83,6 +86,7 @@ export default function todo(state = initialState, action) {
       }
     case FETCH_HIGH_SCORES_REQUEST:
     case FETCH_QUESTIONS_REQUEST:
+    case DELETE_HIGH_SCORES_REQUEST:
       return {
         ...state,
         quizState: 'idle',
@@ -108,6 +112,7 @@ export default function todo(state = initialState, action) {
     case SAVE_HIGH_SCORE_ERROR:
     case FETCH_HIGH_SCORES_ERROR:
     case FETCH_QUESTIONS_ERROR:
+    case DELETE_HIGH_SCORES_ERROR:
       return {
         ...state,
         quizState: 'error',
@@ -123,6 +128,13 @@ export default function todo(state = initialState, action) {
         ...state,
         name: action.payload.name,
       }
+    case DELETE_HIGH_SCORES_SUCCESS: {
+      return {
+        ...state,
+        quizState: 'over',
+        highScores: [],
+      }
+    }
     case RESTART_QUIZ:
       return {
         ...initialState,

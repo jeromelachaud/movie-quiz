@@ -1,6 +1,9 @@
 import axios from 'axios'
 import { generateRandomMarks, generateWeightedRandomNumber } from '../utils'
 import {
+  DELETE_HIGH_SCORES_ERROR,
+  DELETE_HIGH_SCORES_REQUEST,
+  DELETE_HIGH_SCORES_SUCCESS,
   DISPLAY_HIGH_SCORE_FORM,
   FETCH_HIGH_SCORES_ERROR,
   FETCH_HIGH_SCORES_REQUEST,
@@ -74,6 +77,19 @@ const saveHighScoreError = payload => ({
   payload,
 })
 
+const resetHighScoresRequest = () => ({
+  type: DELETE_HIGH_SCORES_REQUEST,
+})
+
+const resetHighScoresSuccess = () => ({
+  type: DELETE_HIGH_SCORES_SUCCESS,
+})
+
+const resetHighScoresError = payload => ({
+  type: DELETE_HIGH_SCORES_ERROR,
+  payload,
+})
+
 export const setName = payload => ({
   type: SET_NAME,
   payload,
@@ -141,10 +157,13 @@ export const fetchHighScores = () => async dispatch => {
 
 const checkHighScores = () => async (dispatch, getState) => {
   const { movieQuiz } = getState()
-  const isScoreHigh = movieQuiz.highScores.filter(
-    item => item.score < movieQuiz.score
-  )
-  if (isScoreHigh.length > 0 && movieQuiz.isCurrentScoreHighScore === false) {
+  const { isCurrentScoreHighScore, highScores, score } = movieQuiz
+
+  const isScoreHigh =
+    highScores.filter(item => item.score < score).length >= 1 ||
+    (highScores.length === 0 && score >= 1)
+
+  if (!isCurrentScoreHighScore && isScoreHigh) {
     dispatch(displayHighScoreForm())
   }
 }
@@ -262,5 +281,24 @@ export const fetchQuestions = () => async dispatch => {
 export const restartQuiz = () => dispatch => {
   dispatch(resetQuiz())
   dispatch(fetchQuestions())
+}
+
+export const resetHighScores = () => async dispatch => {
+  dispatch(resetHighScoresRequest())
+  try {
+    await axios.delete(`${process.env.REACT_APP_HOST}/highscores`, {
+      headers: {
+        authorization: `Bearer ${process.env.REACT_APP_JWT_TOKEN}`,
+      },
+    })
+    dispatch(resetHighScoresSuccess())
+  } catch (error) {
+    console.log('error', error)
+    dispatch(
+      resetHighScoresError({
+        error: 'An error occurred while deleting the high scores, please retry',
+      })
+    )
+  }
 }
 export const resetQuiz = () => ({ type: RESTART_QUIZ })
