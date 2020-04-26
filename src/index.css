@@ -330,3 +330,9 @@ table tr:nth-child(even) {
 ul {
   list-style: none;
 }
+main {
+  padding: 0;
+}
+header {
+  padding-bottom: 0.5rem;
+}

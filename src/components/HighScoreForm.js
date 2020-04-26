@@ -31,7 +31,12 @@ export default function HighScoreForm() {
           ref={inputRef}
           onChange={handleOnchange}
         />
-        <button>Save High Score</button>
+        <button>
+          Save High Score{' '}
+          <span role="img" aria-label="Movie Quiz">
+            💾
+          </span>
+        </button>
         {quizState === 'idle' && <div>Saving High Scores...</div>}
       </form>
     </section>

@@ -7,8 +7,16 @@ function Answers() {
 
   return (
     <>
-      <Answer value={'true'} selected={currentAnswer === 'true'} />
-      <Answer value={'false'} selected={currentAnswer === 'false'} />
+      <Answer
+        value={'true'}
+        labelValue="Yes"
+        selected={currentAnswer === 'true'}
+      />
+      <Answer
+        value={'false'}
+        labelValue="No"
+        selected={currentAnswer === 'false'}
+      />
     </>
   )
 }

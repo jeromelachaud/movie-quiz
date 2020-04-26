@@ -46,7 +46,10 @@ function HighScores({ highScores }) {
               <th />
               <th colSpan="2">
                 <button id="deleteButton" onClick={handleOnClick}>
-                  Delete High Score
+                  Reset High Scores{' '}
+                  <span role="img" aria-label="Movie Quiz">
+                    ♻️
+                  </span>
                 </button>
                 {quizState === 'idle' && <div>Deleting High Scores...</div>}
               </th>

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setCurrentAnswer, setError } from '../actions'
-function Answer({ value }) {
+function Answer({ value, labelValue }) {
   const { currentAnswer, error, quizState } = useSelector(
     state => state.movieQuiz
   )
@@ -22,7 +22,7 @@ function Answer({ value }) {
         checked={currentAnswer === value}
         onChange={event => handleOnChange(event)}
       />
-      <label htmlFor={value}>{value}</label>{' '}
+      <label htmlFor={value}>{labelValue}</label>{' '}
     </>
   )
 }
