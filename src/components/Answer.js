@@ -18,7 +18,7 @@ function Answer({ value }) {
         type="radio"
         id={value}
         name={value}
-        disabled={quizState === 'over'}
+        disabled={quizState !== 'on'}
         checked={currentAnswer === value}
         onChange={event => handleOnChange(event)}
       />

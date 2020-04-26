@@ -30,7 +30,8 @@ const initialState = {
   isAnswerCorrect: '',
   error: '',
   score: 0,
-  quizState: '',
+  quizState: 'off',
+  hasQuizRestarted: false,
   isCurrentScoreHighScore: false,
   highScores: [],
   displayHighScoreForm: false,
@@ -43,7 +44,7 @@ export default function todo(state = initialState, action) {
       return {
         ...state,
         questions: action.payload.questions,
-        quizState: 'on',
+        quizState: state.hasQuizRestarted ? 'on' : 'off',
       }
     }
 
@@ -138,6 +139,7 @@ export default function todo(state = initialState, action) {
     case RESTART_QUIZ:
       return {
         ...initialState,
+        hasQuizRestarted: true,
       }
     default:
       return state

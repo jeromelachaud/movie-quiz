@@ -2,8 +2,10 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   fetchQuestions,
+  restartQuiz,
   setCurrentAnswer,
   setError,
+  setQuizState,
   submitAnswer,
   validateAnswer,
 } from '../actions'
@@ -33,6 +35,49 @@ function App() {
     dispatch(setCurrentAnswer({ currentAnswer: '' }))
     dispatch(validateAnswer())
   }
+
+  const startQuiz = () => {
+    dispatch(setQuizState({ quizState: 'on' }))
+  }
+  const handleOnClickRestart = () => {
+    dispatch(restartQuiz())
+  }
+
+  const MainButton = () => {
+    if (quizState === 'off') {
+      return (
+        <button className="btn btn-primary" onClick={startQuiz}>
+          Start Movie Quiz!{' '}
+          <span role="img" aria-label="Movie Quiz">
+            🍿
+          </span>
+        </button>
+      )
+    } else if (quizState === 'over') {
+      return (
+        <button className="btn btn-primary" onClick={handleOnClickRestart}>
+          Restart Movie Quiz{' '}
+          <span role="img" aria-label="Movie Quiz">
+            🔄
+          </span>
+        </button>
+      )
+    } else {
+      return (
+        <button
+          className="btn btn-primary"
+          onClick={nextQuestion}
+          disabled={quizState !== 'on' || currentAnswer === ''}
+        >
+          Confirm and Continue{' '}
+          <span role="img" aria-label="Movie Quiz">
+            ➡️
+          </span>
+        </button>
+      )
+    }
+  }
+
   return (
     <>
       <section>
@@ -52,16 +97,10 @@ function App() {
         <Answers />
       </section>
       <section>
-        <button
-          className="btn btn-primary"
-          onClick={nextQuestion}
-          disabled={quizState === 'over'}
-        >
-          Confirm and Continue
-        </button>
+        <MainButton />
       </section>
       <section>{error && <Error />}</section>
-      {quizState !== 'on' && <ScoreBoard />}
+      {quizState === 'over' && <ScoreBoard />}
     </>
   )
 }

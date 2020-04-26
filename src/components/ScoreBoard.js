@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchHighScores, restartQuiz } from '../actions'
+import { fetchHighScores } from '../actions'
 import { formatTimer } from '../utils'
 import HighScoreForm from './HighScoreForm'
 import HighScores from './HighScores'
@@ -21,10 +21,6 @@ export default function ScoreBoard() {
     })
   }
   const dispatch = useDispatch()
-
-  const handleOnClickRestart = () => {
-    dispatch(restartQuiz())
-  }
 
   const handleOnClickFetchHighScores = () => {
     dispatch(fetchHighScores())
