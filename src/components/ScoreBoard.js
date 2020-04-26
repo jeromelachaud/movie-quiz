@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchHighScores } from '../actions'
 import { formatTimer } from '../utils'
 import HighScoreForm from './HighScoreForm'
-import HighScores from './HighScores'
+import HighScoresBoard from './HighScoresBoard'
 
 export default function ScoreBoard() {
   const {
@@ -37,7 +37,7 @@ export default function ScoreBoard() {
       <section>
         {displayHighScoreForm && <HighScoreForm />}
         {quizState === 'over' && highScores.length > 0 && (
-          <HighScores highScores={highScores} />
+          <HighScoresBoard highScores={highScores} />
         )}
         {quizState === 'error' && (
           <section>

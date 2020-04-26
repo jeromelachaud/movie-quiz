@@ -1,5 +1,11 @@
 import axios from 'axios'
-import { baseUrl, jwtToken, tmdbApiBaseUrl, tmdbApiKey } from '../config'
+import {
+  baseUrl,
+  highScoresBoardSize,
+  jwtToken,
+  tmdbApiBaseUrl,
+  tmdbApiKey,
+} from '../config'
 import { generateRandomMarks, generateWeightedRandomNumber } from '../utils'
 import {
   DELETE_HIGH_SCORES_ERROR,
@@ -136,11 +142,14 @@ export const checkQuizState = () => async (dispatch, getState) => {
 export const fetchHighScores = () => async dispatch => {
   dispatch(fetchHighScoresRequest())
   try {
-    const highScores = await axios.get(`${baseUrl}/highscores`, {
-      headers: {
-        authorization: `Bearer ${jwtToken}`,
-      },
-    })
+    const highScores = await axios.get(
+      `${baseUrl}/highscores?limit=${highScoresBoardSize}`,
+      {
+        headers: {
+          authorization: `Bearer ${jwtToken}`,
+        },
+      }
+    )
     dispatch(fetchHighScoresSuccess({ highScores }))
     dispatch(checkHighScores())
   } catch (error) {
@@ -155,13 +164,14 @@ export const fetchHighScores = () => async dispatch => {
 
 const checkHighScores = () => async (dispatch, getState) => {
   const { movieQuiz } = getState()
-  const { isCurrentScoreHighScore, highScores, score } = movieQuiz
+  const { isCurrentScoreHighScore, highScores, score, questions } = movieQuiz
 
-  const isScoreHigh =
+  const isHighScore =
     highScores.filter(item => item.score < score).length >= 1 ||
-    (highScores.length === 0 && score >= 1)
+    (highScores.length === 0 && score >= 1) ||
+    (highScores.length < highScoresBoardSize && score === questions.length)
 
-  if (!isCurrentScoreHighScore && isScoreHigh) {
+  if (!isCurrentScoreHighScore && isHighScore) {
     dispatch(displayHighScoreForm())
   }
 }
