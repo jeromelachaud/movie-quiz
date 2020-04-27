@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { resetHighScores } from '../actions'
@@ -60,6 +61,10 @@ function HighScores({ highScores }) {
       </section>
     </>
   )
+}
+
+HighScores.propTypes = {
+  highScores: PropTypes.array.isRequired,
 }
 
 export default HighScores

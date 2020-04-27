@@ -1,6 +1,8 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setCurrentAnswer, setError } from '../actions'
+
 function Answer({ value, labelValue }) {
   const { currentAnswer, error, quizState } = useSelector(
     state => state.movieQuiz
@@ -25,6 +27,11 @@ function Answer({ value, labelValue }) {
       <label htmlFor={value}>{labelValue}</label>{' '}
     </>
   )
+}
+
+Answer.propTypes = {
+  value: PropTypes.string.isRequired,
+  labelValue: PropTypes.string.isRequired,
 }
 
 export default Answer

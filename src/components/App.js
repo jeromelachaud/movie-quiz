@@ -99,7 +99,7 @@ function App() {
       <section>
         <MainButton />
       </section>
-      <section>{error && <Error />}</section>
+      <section>{error && <Error error={error} />}</section>
       {quizState === 'over' && <ScoreBoard />}
     </>
   )
