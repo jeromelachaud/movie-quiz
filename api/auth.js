@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken')
 const config = require('./config')
-const verifyToken = autorizationHeader => {
+const verifyToken = authorizationHeader => {
   try {
-    if (autorizationHeader === undefined) return false
-    const token = autorizationHeader.split(' ')[1]
+    if (authorizationHeader === undefined) return false
+    const token = authorizationHeader.split(' ')[1]
     const verifiedToken = jwt.verify(token, config.JWT_SECRET)
     return verifiedToken
   } catch (error) {

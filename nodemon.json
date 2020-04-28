@@ -4,5 +4,5 @@
     "NODE_ENV": "development"
   },
   "ignore": ["src/**/*.js"],
-  "watch": ["api/**/*.js"]
+  "watch": ["server.js", "api/**/*.js"]
 }
