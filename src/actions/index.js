@@ -226,7 +226,7 @@ export const fetchQuestions = () => async dispatch => {
   let actors = {}
   try {
     const popularMovies = await axios.get(
-      `${tmdbApiBaseUrl}/popular?api_key=${tmdbApiKey}`
+      `${tmdbApiBaseUrl}/now_playing?api_key=${tmdbApiKey}`
     )
     const movies = popularMovies.data.results.map(movie => ({
       id: movie.id,
